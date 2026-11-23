@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZEIN TEXTURE PACK</title>
+
+<style>
+:root {
+  --bg: #090b12;
+  --panel: #111621;
+  --panel2: #171e2b;
+  --line: #283244;
+  --text: #eef2ff;
+  --muted: #9ba8bc;
+  --gold: #f4c35b;
+  --purple: #a78bfa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top, #1a2030 0, #090b12 55%);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+header {
+  padding: 56px 20px 34px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, #151b29aa, transparent);
+}
+
+.logo {
+  font-size: clamp(2rem, 7vw, 4.3rem);
+  font-weight: 950;
+  letter-spacing: .08em;
+  color: var(--gold);
+  text-shadow: 0 0 22px #f4c35b33;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px 18px 60px;
+}
+
+.search {
+  width: 100%;
+  padding: 15px 17px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #0d111a;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+}
+
+.search:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px #f4c35b18;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+
+.filter {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filter.active {
+  color: #10131a;
+  background: var(--gold);
+  border-color: var(--gold);
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: linear-gradient(145deg, var(--panel2), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 17px;
+  display: flex;
+  flex-direction: column;
+  min-height: 168px;
+  transition: transform .15s, border-color .15s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #58657b;
+}
+
+.tag {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.card h3 {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin: 10px 0 8px;
+}
+
+.card p {
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 0 0 15px;
+}
+
+.download {
+  margin-top: auto;
+  text-decoration: none;
+  text-align: center;
+  background: linear-gradient(90deg, var(--gold), #e9a94b);
+  color: #141720;
+  font-weight: 800;
+  padding: 11px;
+  border-radius: 10px;
+}
+
+.download:hover {
+  filter: brightness(1.08);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px 12px;
+  border-top: 1px solid var(--line);
+  font-size: .85rem;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 35px;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">ZEIN TEXTURE PACK</div>
+  <div class="subtitle">
+    Minecraft Bedrock • Pack collection & downloads
+  </div>
+</header>
+
+<main class="wrap">
+
+  <input
+    class="search"
+    id="search"
+    placeholder="Search texture packs..."
+    aria-label="Search texture packs"
+  >
+
+  <div class="filters">
+
+    <button class="filter active" data-cat="All">All Packs</button>
+    <button class="filter" data-cat="Visual">Visual</button>
+    <button class="filter" data-cat="Utility">Utility</button>
+    <button class="filter" data-cat="UI">UI</button>
+    <button class="filter" data-cat="Animation">Animation</button>
+    <button class="filter" data-cat="PvP">PvP</button>
+
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="empty" id="empty">
+    No packs found.
+  </div>
+
+</main>
+
+<footer>
+  ZEIN TEXTURE PACK • Curated Minecraft pack links
+</footer>
+
+<script>
+
+const packs = [
+
+  {
+    name: "No Lava Water Fog v1.2.2",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/xclo46ml7x6beao/No+Lava++Wate+Fog+v1.2.2.mcpack/file"
+  },
+
+  {
+    name: "Hover Text Fix",
+    cat: "UI",
+    url: "https://www.mediafire.com/file/cdtn8y659g7mbl2/Hover+Text+Fix.mcpack/file"
+  },
+
+  {
+    name: "Toggle Night Vision v0.5",
+    cat: "Utility",
+    url: "https://www.mediafire.com/file/ey7mbvi9febed99/Toggle+Night+Vision+v0.5.mcpack/file"
+  },
+
+  {
+    name: "3D My Totem Doll",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/6rxuioomn64oxkw/3DMy_Totem_Doll.mcpack/file"
+  },
+
+  {
+    name: "With Cave Brighter",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/8z9b07agqlh6v6s/With_Cave_Brighter.zip/file"
+  },
+
+  {
+    name: "Better Sounds v3",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/cb7aiy3v5a0y1ps/Better_Sounds.v3_byRyzX.ID.mcpack.zip/file"
+  },
+
+  {
+    name: "Just Animation v1.2",
+    cat: "Animation",
+    url: "https://www.mediafire.com/file/q83qincidy5h7el/JustAnimation_V1.2_by_RyzX.ID.mcpack.zip/file"
+  },
+
+  {
+    name: "ViewModel v1.4.2",
+    cat: "PvP",
+    url: "https://www.mediafire.com/file/mglqep66dkxelbm/ViewModel_V1.4.2_by_RyzX.ID.mcpack.zip/file"
+  },
+
+  {
+    name: "Fast Craft / Fast Loot v3.5",
+    cat: "Utility",
+    url: "https://www.mediafire.com/file/hn6g0falvfzem0s/Fast-Craft+Fast-Loot+by+Bilz+v3,5.mcpack/file"
+  },
+
+  {
+    name: "RGB Outline",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/ac4cnjymc5fbzus/RGB+Outline.mcpack/file"
+  },
+
+  {
+    name: "Sodium GL Reimagined 1.2.0",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/sgb2uo6ycezjup0/§ISodium+GL+§5Reimagined+1.2.0.mcpack/file"
+  },
+
+  {
+    name: "Better Grass Sky",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/1qucdbju2zwfuz5/BetterGrassSky.mcpack/file"
+  },
+
+  {
+    name: "Glowing Arm",
+    cat: "Visual",
+    url: "https://www.mediafire.com/file/yfh4eylhih3bfds/GlowingArm.mcpack/file"
+  },
+
+  {
+    name: "Toggle Night Vision v0.6.1 Hotfix",
+    cat: "Utility",
+    url: "https://www.mediafire.com/file/ipkn5qspzqufp26/Toggle+Night+Vision+v0.6.1+Hotfix/mcpack/file"
+  },
+
+  {
+    name: "Better Inventory v1.1.19",
+    cat: "UI",
+    url: "https://www.mediafire.com/file/f8cllhet7cw2ep7/Better+Inventory+v1.1.19.mcpack/file"
+  },
+
+  {
+    name: "Render Distance Limiter v1.1",
+    cat: "Utility",
+    url: "https://www.mediafire.com/file/9khbg6ckoiwi3pu/Render_Distance_Limiter_V1.1.mcpack/file"
+  }
+
+];
+
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+const empty = document.getElementById("empty");
+
+let category = "All";
+
+function render() {
+
+  const query = search.value.trim().toLowerCase();
+
+  const filtered = packs.filter(pack => {
+
+    const matchesCategory =
+      category === "All" || pack.cat === category;
+
+    const matchesSearch =
+      pack.name.toLowerCase().includes(query);
+
+    return matchesCategory && matchesSearch;
+
+  });
+
+  grid.innerHTML = filtered.map(pack => `
+
+    <article class="card">
+
+      <span class="tag">
+        ${pack.cat}
+      </span>
+
+      <h3>
+        ${pack.name}
+      </h3>
+
+      <p>
+        Bedrock pack • MediaFire
+      </p>
+
+      <a
+        class="download"
+        href="${pack.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Download ↗
+      </a>
+
+    </article>
+
+  `).join("");
+
+  empty.style.display =
+    filtered.length ? "none" : "block";
+
+}
+
+document.querySelectorAll(".filter").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(".filter")
+      .forEach(item => item.classList.remove("active"));
+
+    button.classList.add("active");
+
+    category = button.dataset.cat;
+
+    render();
+
+  });
+
+});
+
+search.addEventListener("input", render);
+
+render();
+
+</script>
+
+</body>
+</html>
